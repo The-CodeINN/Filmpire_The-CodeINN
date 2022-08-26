@@ -42,9 +42,14 @@ export const tmdbApi = createApi({
 
     // get movie
     getMovie: builder.query({
-      query: ({ movieId }) => `movie/${movieId}?append_to_response=videos,credits&api_key=${tmdbApiKey}`,
+      query: ({ movieId }) => `/movie/${movieId}?append_to_response=videos,credits&api_key=${tmdbApiKey}`,
+    }),
+
+    // get user specific lists
+    getRecommendations: builder.query({
+      query: ({ movieId, list }) => `/movie/${movieId}/${list}?api_key=${tmdbApiKey}`,
     }),
   }),
 });
 
-export const { useGetGenresQuery, useGetMoviesQuery, useGetMovieQuery } = tmdbApi;
+export const { useGetGenresQuery, useGetMoviesQuery, useGetMovieQuery, useGetRecommendationsQuery } = tmdbApi;
