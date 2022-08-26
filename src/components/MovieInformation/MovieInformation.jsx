@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Modal,
   Typography,
@@ -39,6 +39,7 @@ function MovieInformation() {
   const { data, isFetching, error } = useGetMovieQuery({ movieId: id });
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
 
   const { data: recommendations, isFetching: recommendationsIsFetching } = useGetRecommendationsQuery({ movieId: id, list: '/recommendations' });
 
@@ -185,7 +186,7 @@ function MovieInformation() {
                 >
                   IMDB
                 </Button>
-                <Button onClick={() => {}} href="#" endIcon={<Theaters />}>
+                <Button onClick={() => setOpen(true)} href="#" endIcon={<Theaters />}>
                   Trailer
                 </Button>
               </ButtonGroup>
@@ -231,12 +232,30 @@ function MovieInformation() {
         <Typography variant="h3" gutterBottom align="center">
           You might also like:
         </Typography>
-        {recommendations ? <MovieList movies={recommendations} numberOfMovies={12} /> : (
-          <Box>
-            Sorry, no recommendations for you.
-          </Box>
+        {recommendations ? (
+          <MovieList movies={recommendations} numberOfMovies={12} />
+        ) : (
+          <Box>Sorry, no recommendations for you.</Box>
         )}
       </Box>
+
+      <Modal
+        closeAfterTransition
+        className={classes.modal}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        {data?.videos?.results?.length > 0 && (
+          <iframe
+            title="Trailer"
+            autoPlay
+            className={classes.video}
+            frameBorder="0"
+            src={`https://www.youtube.com/embed/${data.videos.results[0].key}`}
+            allow="autoplay"
+          />
+        )}
+      </Modal>
     </Grid>
   );
 }
