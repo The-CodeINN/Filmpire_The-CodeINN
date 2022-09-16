@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
   container: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'center ',
     alignItems: 'center',
   },
   button: {
